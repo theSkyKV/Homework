@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace ConsoleApp1
 {
@@ -32,38 +32,80 @@ namespace ConsoleApp1
                     case "1":
                         Console.Write("How much money do you want to exchange? ");
                         moneyForExchange = Convert.ToSingle(Console.ReadLine());
-                        usdBalance -= moneyForExchange;
-                        roubleBalance += moneyForExchange * usdToRub;
+                        if (usdBalance >= moneyForExchange)
+                        {
+                            usdBalance -= moneyForExchange;
+                            roubleBalance += moneyForExchange * usdToRub;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Not enough money");
+                        }
                         break;
                     case "2":
                         Console.Write("How much money do you want to exchange? ");
                         moneyForExchange = Convert.ToSingle(Console.ReadLine());
-                        roubleBalance -= moneyForExchange;
-                        usdBalance += moneyForExchange / usdToRub;
+                        if (roubleBalance >= moneyForExchange)
+                        {
+                            roubleBalance -= moneyForExchange;
+                            usdBalance += moneyForExchange / usdToRub;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Not enough money");
+                        }
                         break;
                     case "3":
                         Console.Write("How much money do you want to exchange? ");
                         moneyForExchange = Convert.ToSingle(Console.ReadLine());
-                        euroBalance -= moneyForExchange;
-                        roubleBalance += moneyForExchange * eurToRub;
+                        if (euroBalance >= moneyForExchange)
+                        {
+                            euroBalance -= moneyForExchange;
+                            roubleBalance += moneyForExchange * eurToRub;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Not enough money");
+                        }
                         break;
                     case "4":
                         Console.Write("How much money do you want to exchange? ");
                         moneyForExchange = Convert.ToSingle(Console.ReadLine());
-                        roubleBalance -= moneyForExchange;
-                        euroBalance += moneyForExchange / eurToRub;
+                        if (roubleBalance >= moneyForExchange)
+                        {
+                            roubleBalance -= moneyForExchange;
+                            euroBalance += moneyForExchange / eurToRub;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Not enough money");
+                        }
                         break;
                     case "5":
                         Console.Write("How much money do you want to exchange? ");
                         moneyForExchange = Convert.ToSingle(Console.ReadLine());
-                        usdBalance -= moneyForExchange;
-                        euroBalance += moneyForExchange * usdToEur;
+                        if (usdBalance >= moneyForExchange)
+                        {
+                            usdBalance -= moneyForExchange;
+                            euroBalance += moneyForExchange * usdToEur;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Not enough money");
+                        }
                         break;
                     case "6":
                         Console.Write("How much money do you want to exchange? ");
                         moneyForExchange = Convert.ToSingle(Console.ReadLine());
-                        euroBalance -= moneyForExchange;
-                        usdBalance += moneyForExchange / usdToEur;
+                        if (euroBalance >= moneyForExchange)
+                        {
+                            euroBalance -= moneyForExchange;
+                            usdBalance += moneyForExchange / usdToEur;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Not enough money");
+                        }
                         break;
                     case "quit":
                         Console.WriteLine("Good bye");
