@@ -7,16 +7,17 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             string name;
-            string frameSymbol;
+            char frameSymbol;
             int frameWidth;
+            int frameHeight = 3;
 
             Console.Write("Enter your name: ");
             name = Console.ReadLine();
             Console.Write("Enter the symbol of frame: ");
-            frameSymbol = Console.ReadLine();
+            char.TryParse(Console.ReadLine(), out frameSymbol);
 
             frameWidth = name.Length + 2;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < frameHeight; i++)
             {
                 if (i == 1)
                 {
