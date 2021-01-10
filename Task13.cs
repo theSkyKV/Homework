@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp1
+namespace CSLight
 {
     class Program
     {
@@ -10,7 +10,7 @@ namespace ConsoleApp1
             string userInput;
             int attemptsCount = 3;
 
-            while (attemptsCount > 0)
+            for (int i = 0; i < attemptsCount;)
             {
                 Console.Write("Enter the password: ");
                 userInput = Console.ReadLine();
@@ -22,8 +22,7 @@ namespace ConsoleApp1
                 }
                 else
                 {
-                    attemptsCount--;
-                    Console.WriteLine($"Access denied. You have {attemptsCount} attempts.");
+                    Console.WriteLine($"Access denied. You have {--attemptsCount} attempts.");
                 }
             }
         }
