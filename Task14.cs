@@ -7,7 +7,6 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             string userInput = "";
-
             int playerMaxHealth = 1000;
             int playerHealth = playerMaxHealth;
             int playerDamage;
@@ -18,9 +17,7 @@ namespace ConsoleApp1
             int mountainCooldown = 2;
             int bossDamageRate = 2;
             int burnChance;
-
             bool isBurn = false;
-
             Random rand = new Random();
 
             Console.ForegroundColor = ConsoleColor.Red;
@@ -44,11 +41,9 @@ namespace ConsoleApp1
                 rainCooldown--;
                 mountainCooldown--;
 
-                bossDamage = 0;
                 playerDamage = 0;
 
                 userInput = Console.ReadLine();
-
                 switch (userInput)
                 {
                     case "1":
