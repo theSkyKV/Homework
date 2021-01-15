@@ -6,33 +6,32 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            bool onWork = true;
+            bool isWork = true;
             string[] names = new string[0];
             string[] positions = new string[0];
 
-            while(onWork)
+            while (isWork)
             {
                 Console.Clear();
                 Console.WriteLine("Выберите действие: ");
                 Console.Write("1 - Добавить досье.\n2 - Вывести все досье.\n3 - Поиск по фамилии.\n" +
                     "4 - Удалить досье.\n5 - Выход.\n");
 
-                switch(Console.ReadLine())
+                switch (Console.ReadLine())
                 {
                     case "1":
                         Console.Write("Введите имя: ");
                         AddElement(ref names, Console.ReadLine());
                         Console.Write("Введите должность: ");
                         AddElement(ref positions, Console.ReadLine());
+                        Console.WriteLine("Досье успешно добавлено.");
                         break;
                     case "2":
                         DisplayElements(names, positions);
-                        PressAnyKey();
                         break;
                     case "3":
                         Console.Write("Введите имя: ");
                         FindElement(names, Console.ReadLine());
-                        PressAnyKey();
                         break;
                     case "4":
                         Console.Write("Введите номер удаляемого элемента: ");
@@ -42,16 +41,17 @@ namespace ConsoleApp1
                             DeleteElement(ref names, index - 1);
                             DeleteElement(ref positions, index - 1);
                         }
+                        Console.WriteLine("Досье успешно удалено.");
                         break;
                     case "5":
-                        onWork = false;
+                        isWork = false;
                         Console.WriteLine("До встречи!");
                         break;
                     default:
                         Console.WriteLine("Некорректное действие");
-                        PressAnyKey();
                         break;
                 }
+                PressAnyKey();
             }
         }
 
