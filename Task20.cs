@@ -24,14 +24,15 @@ namespace CSLight
         static void DrawBar(int value, int maxValue, int position = 1)
         {
             Console.Clear();
-            Console.SetCursorPosition(0, position);
-            
-            if(value < 0 || maxValue < 0 || position < 0 || value > maxValue)
+
+            if (value < 0 || maxValue < 0 || position < 0 || value > maxValue)
             {
                 Console.WriteLine("Некорректное значение");
                 return;
             }
 
+            Console.SetCursorPosition(0, position);
+            
             Console.Write("[");
             for (var i = 0; i < value; i++)
             {
