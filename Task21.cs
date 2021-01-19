@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace CSLight
 {
@@ -6,10 +6,10 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(GetNumber());
+            Console.WriteLine(ReadNumber());
         }
 
-        static int GetNumber()
+        static int ReadNumber()
         {
             int userInput;
             do
