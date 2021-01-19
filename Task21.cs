@@ -26,8 +26,7 @@ namespace CSLight
             int points = 0;
 
             Console.CursorVisible = false;
-            DrawMap(charMap);
-            GetStartPosition(charMap, ref x, ref y);
+            DrawMap(charMap, ref x, ref y);
 
             while (isPlaying)
             {
@@ -51,31 +50,21 @@ namespace CSLight
             return charArray;
         }
 
-        static void DrawMap(char[,] map)
+        static void DrawMap(char[,] map, ref int x, ref int y)
         {
             for (var i = 0; i < map.GetLength(0); i++)
             {
                 for (var j = 0; j < map.GetLength(1); j++)
                 {
                     Console.Write(map[i, j]);
-                }
-                Console.WriteLine();
-            }
-        }
 
-        static void GetStartPosition(char[,] map, ref int x, ref int y)
-        {
-            for (var i = 0; i < map.GetLength(0); i++)
-            {
-                for (var j = 0; j < map.GetLength(1); j++)
-                {
                     if (map[i, j] == '@')
                     {
                         x = j;
                         y = i;
-                        return;
                     }
                 }
+                Console.WriteLine();
             }
         }
 
