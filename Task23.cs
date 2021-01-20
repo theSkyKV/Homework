@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace CSLight
@@ -7,6 +7,7 @@ namespace CSLight
     {
         static void Main(string[] args)
         {
+            bool isWork = true;
             string userInput;
             Dictionary<string, string> vocabulary = new Dictionary<string, string>
             {
@@ -15,7 +16,7 @@ namespace CSLight
                 ["Слово3"] = "Значение3"
             };
 
-            while (true)
+            while (isWork)
             {
                 Console.Clear();
                 Console.WriteLine("Введите слово: ");
@@ -29,8 +30,12 @@ namespace CSLight
                 {
                     Console.WriteLine("Такого слова нет...");
                 }
-                Console.WriteLine("Нажмите любую клавишу, чтобы продолжить...");
-                Console.ReadKey(true);
+                Console.WriteLine("Нажмите любую клавишу, чтобы продолжить, или q для выхода...");
+                ConsoleKeyInfo key = Console.ReadKey();
+                if (key.Key == ConsoleKey.Q)
+                {
+                    isWork = false;
+                }
             }
         }
     }
