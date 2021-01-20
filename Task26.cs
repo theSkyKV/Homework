@@ -42,16 +42,23 @@ namespace CSLight
                         }
                         break;
                     case "3":
-                        Console.Write("Введите имя: ");
-                        userInput = Console.ReadLine();
-                        if (employeesList.ContainsKey(userInput))
+                        if (employeesList.Count > 0)
                         {
-                            employeesList.Remove(userInput);
-                            Console.WriteLine("Досье успешно удалено.");
+                            Console.Write("Введите имя: ");
+                            userInput = Console.ReadLine();
+                            if (employeesList.ContainsKey(userInput))
+                            {
+                                employeesList.Remove(userInput);
+                                Console.WriteLine("Досье успешно удалено.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Такого досье не существует...");
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Такого досье не существует...");
+                            Console.WriteLine("Список досье пуст...");
                         }
                         break;
                     case "4":
