@@ -1,11 +1,3 @@
-﻿// Сначала идет последовательный рандом новых индексов, т.е.
-// Для 0-го элемента изначальный индекс 0.
-// Для 1-го элемента выбирается индекс 0 или 1.
-// Для 2-го - 0, 1 или 2 и т.д.
-// Далее, начиная с последнего элемента, просматриваются все элементы на наличие одинаковых.
-// К каждому следующему одинаковому элементу прибавляется coincidencesCount (количество совпадений до текущего момента).
-// Пока есть совпадения, операция продолжается.
-// После того, как совпадения не обнаруживаются, элементы массива встают на новые места.
 using System;
 
 namespace CSLight
@@ -17,18 +9,12 @@ namespace CSLight
             int[] numbers = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
             Console.WriteLine("До: ");
-            foreach (var number in numbers)
-            {
-                Console.Write(number + " ");
-            }
+            PrintArray(numbers);
 
             Shuffle(ref numbers);
 
             Console.WriteLine("\nПосле: ");
-            foreach (var number in numbers)
-            {
-                Console.Write(number + " ");
-            }
+            PrintArray(numbers);
         }
 
         static void Shuffle(ref int[] array)
@@ -74,6 +60,14 @@ namespace CSLight
             }
 
             array = newArray;
+        }
+
+        static void PrintArray(int[] array)
+        {
+            foreach (var element in array)
+            {
+                Console.Write(element + " ");
+            }
         }
     }
 }
