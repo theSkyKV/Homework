@@ -7,7 +7,100 @@ namespace Database
     {
         static void Main(string[] args)
         {
+            Canvas canvas = new Canvas();
             Database database = new Database();
+            canvas.Render(database);
+        }
+    }
+
+    class Player
+    {
+        public string Name { get; private set; }
+        public int Level { get; private set; }
+        public bool IsBanned { get; private set; }
+
+        public Player(string name, int level = 1)
+        {
+            Name = name;
+            Level = level;
+            IsBanned = false;
+        }
+
+        public void ChangeState()
+        {
+            IsBanned = !IsBanned;
+        }
+    }
+
+    class Database
+    {
+        private Dictionary<int, Player> _database = new Dictionary<int, Player>();
+        private int _playerId = 1;
+        public enum State
+        {
+            Unbanned,
+            Banned
+        }
+
+        public enum Action
+        {
+            Unban,
+            Ban
+        }
+
+        public void AddPlayer(Player player)
+        {
+            _database.Add(_playerId, player);
+            Console.WriteLine("Игрок успешно добавлен.");
+            _playerId++;
+        }
+
+        public void DeletePlayer(int id)
+        {
+            if (_database.ContainsKey(id))
+            {
+                _database.Remove(id);
+                Console.WriteLine("Игрок успешно удален.");
+            }
+            else
+            {
+                Console.WriteLine("Игрок не найден.");
+            }
+        }
+
+        public void ChangeState(int id, Action action)
+        {
+            if (_database.ContainsKey(id))
+            {
+                State state = (State)Convert.ToInt32(_database[id].IsBanned);
+                if ((int)state != (int)action)
+                {
+                    _database[id].ChangeState();
+                }
+                else
+                {
+                    Console.WriteLine("Некорректное действие.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Игрок не найден.");
+            }
+        }
+
+        public void ShowList()
+        {
+            foreach (var element in _database)
+            {
+                Console.WriteLine($"{element.Key} | {element.Value.Name} | {element.Value.Level} | {element.Value.IsBanned}");
+            }
+        }
+    }
+
+    class Canvas
+    {
+        public void Render(Database database)
+        {
             bool isWork = true;
             string userInput;
 
@@ -16,6 +109,7 @@ namespace Database
                 Player player;
                 string name;
                 int level;
+                int id;
 
                 Console.Clear();
                 Console.WriteLine("Выберите действие:");
@@ -39,13 +133,25 @@ namespace Database
                         database.AddPlayer(player);
                         break;
                     case "2":
-                        TryToAct(database.DeletePlayer);
+                        Console.WriteLine("Введите ID игрока:");
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            database.DeletePlayer(id);
+                        }
                         break;
                     case "3":
-                        TryToAct(database.BanPlayer);
+                        Console.WriteLine("Введите ID игрока:");
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            database.ChangeState(id, Database.Action.Ban);
+                        }
                         break;
                     case "4":
-                        TryToAct(database.UnbanPlayer);
+                        Console.WriteLine("Введите ID игрока:");
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            database.ChangeState(id, Database.Action.Unban);
+                        }
                         break;
                     case "5":
                         database.ShowList();
@@ -60,104 +166,6 @@ namespace Database
                 }
                 Console.WriteLine("Нажмите любую клавишу для продолжения...");
                 Console.ReadKey(true);
-            }
-        }
-
-        private static void TryToAct(Action<int> action)
-        {
-            int id;
-            Console.WriteLine("Введите ID игрока:");
-            if (int.TryParse(Console.ReadLine(), out id))
-            {
-                action(id);
-            }
-            else
-            {
-                Console.WriteLine("Некорректный ввод.");
-            }
-        }
-    }
-
-    class Player
-    {
-        public string Name { get; private set; }
-        public int Level { get; private set; }
-        public bool IsBanned { get; set; }
-
-        public Player(string name, int level = 1)
-        {
-            Name = name;
-            Level = level;
-            IsBanned = false;
-        }
-    }
-
-    class Database
-    {
-        private Dictionary<int, Player> _database = new Dictionary<int, Player>();
-        private int _playerId = 1;
-
-        public void AddPlayer(Player player)
-        {
-            _database.Add(_playerId, player);
-            Console.WriteLine("Игрок успешно добавлен.");
-            _playerId++;
-        }
-
-        public void DeletePlayer(int id)
-        {
-            if (_database.ContainsKey(id))
-            {
-                _database.Remove(id);
-                Console.WriteLine("Игрок успешно удален.");
-            }
-            else
-            {
-                Console.WriteLine("Игрок не найден.");
-            }
-        }
-
-        public void BanPlayer(int id)
-        {
-            if (_database.ContainsKey(id))
-            {
-                if (_database[id].IsBanned)
-                {
-                    Console.WriteLine("Игрок уже забанен.");
-                    return;
-                }
-                _database[id].IsBanned = true;
-                Console.WriteLine("Игрок успешно забанен.");
-            }
-            else
-            {
-                Console.WriteLine("Игрок не найден.");
-            }
-        }
-
-        public void UnbanPlayer(int id)
-        {
-            if (_database.ContainsKey(id))
-            {
-                if (!_database[id].IsBanned)
-                {
-                    Console.WriteLine("Игрок и так не забанен.");
-                    return;
-                }
-                _database[id].IsBanned = false;
-                Console.WriteLine("Игрок успешно разбанен.");
-            }
-            else
-            {
-                Console.WriteLine("Игрок не найден.");
-            }
-        }
-
-        public void ShowList()
-        {
-            foreach (var element in _database)
-            {
-                Console.WriteLine($"{element.Key} {element.Value.Name} {element.Value.Level} {element.Value.IsBanned}");
             }
         }
     }
