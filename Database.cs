@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Database
@@ -10,20 +10,19 @@ namespace Database
             Database database = new Database();
             bool isWork = true;
             string userInput;
-            
+
             while (isWork)
             {
                 Player player;
                 string name;
                 int level;
-                int id;
 
                 Console.Clear();
                 Console.WriteLine("Выберите действие:");
                 Console.WriteLine("1 - Добавить игрока, 2 - Удалить игрока, 3 - Забанить игрока");
                 Console.WriteLine("4 - Разбанить игрока, 5 - Показать базу данных, 6 - Выход");
                 userInput = Console.ReadLine();
-                switch(userInput)
+                switch (userInput)
                 {
                     case "1":
                         Console.WriteLine("Введите имя игрока:");
@@ -40,37 +39,13 @@ namespace Database
                         database.AddPlayer(player);
                         break;
                     case "2":
-                        Console.WriteLine("Введите ID игрока:");
-                        if (int.TryParse(Console.ReadLine(), out id))
-                        {
-                            database.DeletePlayer(id);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод.");
-                        }
+                        TryToAct(database.DeletePlayer);
                         break;
                     case "3":
-                        Console.WriteLine("Введите ID игрока:");
-                        if (int.TryParse(Console.ReadLine(), out id))
-                        {
-                            database.BanPlayer(id);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод.");
-                        }
+                        TryToAct(database.BanPlayer);
                         break;
                     case "4":
-                        Console.WriteLine("Введите ID игрока:");
-                        if (int.TryParse(Console.ReadLine(), out id))
-                        {
-                            database.UnbanPlayer(id);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Некорректный ввод.");
-                        }
+                        TryToAct(database.UnbanPlayer);
                         break;
                     case "5":
                         database.ShowList();
@@ -85,6 +60,20 @@ namespace Database
                 }
                 Console.WriteLine("Нажмите любую клавишу для продолжения...");
                 Console.ReadKey(true);
+            }
+        }
+
+        private static void TryToAct(Action<int> action)
+        {
+            int id;
+            Console.WriteLine("Введите ID игрока:");
+            if (int.TryParse(Console.ReadLine(), out id))
+            {
+                action(id);
+            }
+            else
+            {
+                Console.WriteLine("Некорректный ввод.");
             }
         }
     }
