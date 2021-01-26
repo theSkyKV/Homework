@@ -26,7 +26,7 @@ namespace Database
             IsBanned = false;
         }
 
-        public void ChangeState()
+        public void BanOrUnban()
         {
             IsBanned = !IsBanned;
         }
@@ -48,8 +48,23 @@ namespace Database
             Ban
         }
 
-        public void AddPlayer(Player player)
+        public void AddPlayer()
         {
+            Player player;
+            string name;
+            int level;
+
+            Console.WriteLine("Введите имя игрока:");
+            name = Console.ReadLine();
+            Console.WriteLine("Введите уровень игрока:");
+            if (int.TryParse(Console.ReadLine(), out level))
+            {
+                player = new Player(name, level);
+            }
+            else
+            {
+                player = new Player(name);
+            }
             _database.Add(_playerId, player);
             Console.WriteLine("Игрок успешно добавлен.");
             _playerId++;
@@ -68,14 +83,14 @@ namespace Database
             }
         }
 
-        public void ChangeState(int id, Action action)
+        public void BanOrUnban(int id, Action action)
         {
             if (_database.ContainsKey(id))
             {
                 State state = (State)Convert.ToInt32(_database[id].IsBanned);
                 if ((int)state != (int)action)
                 {
-                    _database[id].ChangeState();
+                    _database[id].BanOrUnban();
                 }
                 else
                 {
@@ -106,9 +121,6 @@ namespace Database
 
             while (isWork)
             {
-                Player player;
-                string name;
-                int level;
                 int id;
 
                 Console.Clear();
@@ -119,18 +131,7 @@ namespace Database
                 switch (userInput)
                 {
                     case "1":
-                        Console.WriteLine("Введите имя игрока:");
-                        name = Console.ReadLine();
-                        Console.WriteLine("Введите уровень игрока:");
-                        if (int.TryParse(Console.ReadLine(), out level))
-                        {
-                            player = new Player(name, level);
-                        }
-                        else
-                        {
-                            player = new Player(name);
-                        }
-                        database.AddPlayer(player);
+                        database.AddPlayer();
                         break;
                     case "2":
                         Console.WriteLine("Введите ID игрока:");
@@ -143,14 +144,14 @@ namespace Database
                         Console.WriteLine("Введите ID игрока:");
                         if (int.TryParse(Console.ReadLine(), out id))
                         {
-                            database.ChangeState(id, Database.Action.Ban);
+                            database.BanOrUnban(id, Database.Action.Ban);
                         }
                         break;
                     case "4":
                         Console.WriteLine("Введите ID игрока:");
                         if (int.TryParse(Console.ReadLine(), out id))
                         {
-                            database.ChangeState(id, Database.Action.Unban);
+                            database.BanOrUnban(id, Database.Action.Unban);
                         }
                         break;
                     case "5":
