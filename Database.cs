@@ -7,9 +7,60 @@ namespace Database
     {
         static void Main(string[] args)
         {
-            Canvas canvas = new Canvas();
             Database database = new Database();
-            canvas.Render(database);
+            bool isWork = true;
+            string userInput;
+
+            while (isWork)
+            {
+                int id;
+
+                Console.Clear();
+                Console.WriteLine("Выберите действие:");
+                Console.WriteLine("1 - Добавить игрока, 2 - Удалить игрока, 3 - Забанить игрока");
+                Console.WriteLine("4 - Разбанить игрока, 5 - Показать базу данных, 6 - Выход");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        database.AddPlayer();
+                        break;
+                    case "2":
+                        Console.WriteLine("Введите ID игрока:");
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            database.DeletePlayer(id);
+                        }
+                        break;
+                    case "3":
+                        Console.WriteLine("Введите ID игрока:");
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            database.BanPlayer(id);
+                        }
+                        break;
+                    case "4":
+                        Console.WriteLine("Введите ID игрока:");
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            database.UnbanPlayer(id);
+                        }
+                        break;
+                    case "5":
+                        database.ShowList();
+                        break;
+                    case "6":
+                        Console.WriteLine("До встречи!");
+                        isWork = false;
+                        break;
+                    default:
+                        Console.WriteLine("Некорректный ввод.");
+                        break;
+                }
+                Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                Console.ReadKey(true);
+            }
         }
     }
 
@@ -26,7 +77,7 @@ namespace Database
             IsBanned = false;
         }
 
-        public void BanOrUnban()
+        public void ChangeBannedFlag()
         {
             IsBanned = !IsBanned;
         }
@@ -36,17 +87,6 @@ namespace Database
     {
         private Dictionary<int, Player> _database = new Dictionary<int, Player>();
         private int _playerId = 1;
-        public enum State
-        {
-            Unbanned,
-            Banned
-        }
-
-        public enum Action
-        {
-            Unban,
-            Ban
-        }
 
         public void AddPlayer()
         {
@@ -83,14 +123,24 @@ namespace Database
             }
         }
 
-        public void BanOrUnban(int id, Action action)
+        public void BanPlayer(int id)
+        {
+            ChangeBannedFlag(id, true);
+        }
+
+        public void UnbanPlayer(int id)
+        {
+            ChangeBannedFlag(id, false);
+        }
+
+        public void ChangeBannedFlag(int id, bool isBan)
         {
             if (_database.ContainsKey(id))
             {
-                State state = (State)Convert.ToInt32(_database[id].IsBanned);
-                if ((int)state != (int)action)
+                if (_database[id].IsBanned != isBan)
                 {
-                    _database[id].BanOrUnban();
+                    _database[id].ChangeBannedFlag();
+                    Console.WriteLine("Операция успешна.");
                 }
                 else
                 {
@@ -108,65 +158,6 @@ namespace Database
             foreach (var element in _database)
             {
                 Console.WriteLine($"{element.Key} | {element.Value.Name} | {element.Value.Level} | {element.Value.IsBanned}");
-            }
-        }
-    }
-
-    class Canvas
-    {
-        public void Render(Database database)
-        {
-            bool isWork = true;
-            string userInput;
-
-            while (isWork)
-            {
-                int id;
-
-                Console.Clear();
-                Console.WriteLine("Выберите действие:");
-                Console.WriteLine("1 - Добавить игрока, 2 - Удалить игрока, 3 - Забанить игрока");
-                Console.WriteLine("4 - Разбанить игрока, 5 - Показать базу данных, 6 - Выход");
-                userInput = Console.ReadLine();
-                switch (userInput)
-                {
-                    case "1":
-                        database.AddPlayer();
-                        break;
-                    case "2":
-                        Console.WriteLine("Введите ID игрока:");
-                        if (int.TryParse(Console.ReadLine(), out id))
-                        {
-                            database.DeletePlayer(id);
-                        }
-                        break;
-                    case "3":
-                        Console.WriteLine("Введите ID игрока:");
-                        if (int.TryParse(Console.ReadLine(), out id))
-                        {
-                            database.BanOrUnban(id, Database.Action.Ban);
-                        }
-                        break;
-                    case "4":
-                        Console.WriteLine("Введите ID игрока:");
-                        if (int.TryParse(Console.ReadLine(), out id))
-                        {
-                            database.BanOrUnban(id, Database.Action.Unban);
-                        }
-                        break;
-                    case "5":
-                        database.ShowList();
-                        break;
-                    case "6":
-                        Console.WriteLine("До встречи!");
-                        isWork = false;
-                        break;
-                    default:
-                        Console.WriteLine("Некорректный ввод.");
-                        break;
-                }
-                Console.WriteLine("Нажмите любую клавишу для продолжения...");
-                Console.ReadKey(true);
             }
         }
     }
