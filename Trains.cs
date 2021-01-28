@@ -36,14 +36,14 @@ namespace Trains
 
     class Terminal
     {
-        public Train Train { get; private set; }
-        public bool isOpen { get; private set; }
-
         private Random _rand = new Random();
         private string _departure;
         private string _destination;
         private int _passengersNumber;
         private int _seatsNumberRequired;
+
+        public Train Train { get; private set; }
+        public bool isOpen { get; private set; }
 
         public void OpenTerminal()
         {
@@ -93,11 +93,11 @@ namespace Trains
 
     class Train
     {
+        private List<Carriage> _carriages = new List<Carriage>();
+
         public string Departure { get; private set; }
         public string Destination { get; private set; }
         public int PassengersNumber { get; private set; }
-
-        private List<Carriage> _train = new List<Carriage>();
 
         public Train(string departure, string destination, int passengersNumber)
         {
@@ -108,12 +108,12 @@ namespace Trains
 
         public void AddCarriage(Carriage carriage)
         {
-            _train.Add(carriage);
+            _carriages.Add(carriage);
         }
 
         public void ShowTrainInfo()
         {
-            Console.WriteLine($"Поезд: {Departure} - {Destination} (вагонов: {_train.Count} шт.)");
+            Console.WriteLine($"Поезд: {Departure} - {Destination} (вагонов: {_carriages.Count} шт.)");
             Console.WriteLine($"Куплено билетов на поезд: {PassengersNumber} шт.");
         }
     }
