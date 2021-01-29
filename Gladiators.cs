@@ -28,7 +28,7 @@ namespace Gladiators
             Archer = new Archer(600, 80, 30);
             Mystic = new Mystic(500, 90, 20);
             Warrior = new Warrior(800, 70, 30);
-            Assassin = new Assassin(800, 90, 10);
+            Assassin = new Assassin(700, 80, 10);
         }
 
         public Fighter ChooseFighter()
@@ -40,15 +40,15 @@ namespace Gladiators
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Бойцы арены:");
             Console.WriteLine("1 - Паладин");
-            Console.WriteLine("Уникальная способность - ");
+            Console.WriteLine("Уникальная способность - Защита богов. Броня увеличивается в 2 раза.");
             Console.WriteLine("2 - Лучник");
-            Console.WriteLine("Уникальная способность - ");
+            Console.WriteLine("Уникальная способность - Отравленная стрела. Увеличивает урон на 50 %");
             Console.WriteLine("3 - Мистик");
-            Console.WriteLine("Уникальная способность - ");
+            Console.WriteLine("Уникальная способность - Исцеление. Восстанавливает 80 хп.");
             Console.WriteLine("4 - Воин");
-            Console.WriteLine("Уникальная способность - ");
+            Console.WriteLine("Уникальная способность - Гнев предков. Увеличивает урон за счет потери собственного здоровья.");
             Console.WriteLine("5 - Убийца");
-            Console.WriteLine("Уникальная способность - ");
+            Console.WriteLine("Уникальная способность - Удар в сердце. Наносит трехкратный урон.");
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($"Выберите бойца:");
@@ -123,14 +123,17 @@ namespace Gladiators
         private void Prioritize(Fighter first, Fighter second)
         {
             first.SpecialAbility();
-            second.TakeDamage(first.Damage);
             second.SpecialAbility();
+            second.TakeDamage(first.Damage);
             first.TakeDamage(second.Damage);
         }
     }
 
     abstract class Fighter
     {
+        protected int _baseHealth;
+        protected int _baseDamage;
+        protected int _baseArmor;
         protected Random _rand;
 
         public int Health { get; protected set; }
@@ -145,6 +148,10 @@ namespace Gladiators
             Damage = damage;
             Armor = armor;
             Initiative = _rand.Next(0, 1000);
+
+            _baseHealth = health;
+            _baseDamage = damage;
+            _baseArmor = armor;
         }
 
         public void TakeDamage(int damage)
@@ -171,6 +178,7 @@ namespace Gladiators
 
         public override void SpecialAbility()
         {
+            Armor = _baseArmor;
             int chance = _rand.Next(0, 100);
             if (chance < 30)
             {
@@ -189,6 +197,7 @@ namespace Gladiators
 
         public override void SpecialAbility()
         {
+            Damage = _baseDamage;
             int chance = _rand.Next(0, 100);
             if (chance < 20)
             {
@@ -208,7 +217,7 @@ namespace Gladiators
         public override void SpecialAbility()
         {
             int chance = _rand.Next(0, 100);
-            if (chance < 30)
+            if (chance < 40)
             {
                 Console.WriteLine("Умение мистика - Исцеление. Восстанавливает 80 хп.");
                 Health += 80;
@@ -225,11 +234,13 @@ namespace Gladiators
 
         public override void SpecialAbility()
         {
+            Damage = _baseDamage;
             int chance = _rand.Next(0, 100);
             if (chance < 30)
             {
-                Console.WriteLine("Умение воина - Гнев предков.");
-                Health += 80;
+                Console.WriteLine("Умение воина - Гнев предков. Увеличивает урон за счет потери собственного здоровья.");
+                Health -= 70;
+                Damage *= 2;
             }
         }
     }
@@ -243,11 +254,12 @@ namespace Gladiators
 
         public override void SpecialAbility()
         {
+            Damage = _baseDamage;
             int chance = _rand.Next(0, 100);
-            if (chance < 30)
+            if (chance < 10)
             {
-                Console.WriteLine("Умение убийцы - Призрак из тени.");
-                Health += 80;
+                Console.WriteLine("Умение убийцы - Удар в сердце. Наносит трехкратный урон.");
+                Damage *= 3;
             }
         }
     }
