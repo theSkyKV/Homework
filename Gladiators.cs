@@ -44,7 +44,7 @@ namespace Gladiators
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($"Выберите бойца:");
-            if(int.TryParse(Console.ReadLine(), out userInput))
+            if (int.TryParse(Console.ReadLine(), out userInput))
             {
                 try
                 {
@@ -61,8 +61,8 @@ namespace Gladiators
                 Console.WriteLine("Некорректный ввод. Выбран боец по умолчанию - Паладин.");
                 fighter = _fighters[0];
             }
-            fighter = fighter.GetNewFighter(fighter);
-            
+            fighter = fighter.GetNewFighter();
+
             Console.WriteLine("Нажмите любую клавишу для продолжения...");
             Console.ReadKey(true);
 
@@ -135,14 +135,14 @@ namespace Gladiators
 
         public abstract void SpecialAbility();
         public abstract void ShowInfo();
-        public abstract Fighter GetNewFighter(Fighter fighter);
+        public abstract Fighter GetNewFighter();
     }
 
     class Paladin : Fighter
     {
         public Paladin(int health, int damage, int armor) : base(health, damage, armor)
         {
-            
+
         }
 
         public override void SpecialAbility()
@@ -162,9 +162,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Защита богов. Броня увеличивается в 2 раза.");
         }
 
-        public override Fighter GetNewFighter(Fighter fighter)
+        public override Fighter GetNewFighter()
         {
-            return new Paladin(fighter.Health, fighter.Damage, fighter.Armor);
+            return new Paladin(Health, Damage, Armor);
         }
     }
 
@@ -172,7 +172,7 @@ namespace Gladiators
     {
         public Archer(int health, int damage, int armor) : base(health, damage, armor)
         {
-            
+
         }
 
         public override void SpecialAbility()
@@ -192,9 +192,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Отравленная стрела. Увеличивает урон на 50 %");
         }
 
-        public override Fighter GetNewFighter(Fighter fighter)
+        public override Fighter GetNewFighter()
         {
-            return new Archer(fighter.Health, fighter.Damage, fighter.Armor);
+            return new Archer(Health, Damage, Armor);
         }
     }
 
@@ -202,7 +202,7 @@ namespace Gladiators
     {
         public Mystic(int health, int damage, int armor) : base(health, damage, armor)
         {
-            
+
         }
 
         public override void SpecialAbility()
@@ -221,9 +221,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Исцеление. Восстанавливает 80 хп.");
         }
 
-        public override Fighter GetNewFighter(Fighter fighter)
+        public override Fighter GetNewFighter()
         {
-            return new Mystic(fighter.Health, fighter.Damage, fighter.Armor);
+            return new Mystic(Health, Damage, Armor);
         }
     }
 
@@ -231,7 +231,7 @@ namespace Gladiators
     {
         public Warrior(int health, int damage, int armor) : base(health, damage, armor)
         {
-            
+
         }
 
         public override void SpecialAbility()
@@ -252,9 +252,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Гнев предков. Увеличивает урон за счет потери собственного здоровья.");
         }
 
-        public override Fighter GetNewFighter(Fighter fighter)
+        public override Fighter GetNewFighter()
         {
-            return new Warrior(fighter.Health, fighter.Damage, fighter.Armor);
+            return new Warrior(Health, Damage, Armor);
         }
     }
 
@@ -262,7 +262,7 @@ namespace Gladiators
     {
         public Assassin(int health, int damage, int armor) : base(health, damage, armor)
         {
-            
+
         }
 
         public override void SpecialAbility()
@@ -282,9 +282,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Удар в сердце. Наносит трехкратный урон.");
         }
 
-        public override Fighter GetNewFighter(Fighter fighter)
+        public override Fighter GetNewFighter()
         {
-            return new Assassin(fighter.Health, fighter.Damage, fighter.Armor);
+            return new Assassin(Health, Damage, Armor);
         }
     }
 }
