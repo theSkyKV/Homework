@@ -32,7 +32,7 @@ namespace Gladiators
         public Fighter ChooseFighter()
         {
             Fighter fighter;
-            string userInput;
+            int userInput;
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
@@ -44,34 +44,25 @@ namespace Gladiators
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($"Выберите бойца:");
-            userInput = Console.ReadLine();
-            switch (userInput)
+            if(int.TryParse(Console.ReadLine(), out userInput))
             {
-                case "1":
-                    Console.WriteLine("Выбран паладин");
-                    fighter = _fighters[0].RandomizeStats();
-                    break;
-                case "2":
-                    Console.WriteLine("Выбран лучник");
-                    fighter = _fighters[1].RandomizeStats();
-                    break;
-                case "3":
-                    Console.WriteLine("Выбран мистик");
-                    fighter = _fighters[2].RandomizeStats();
-                    break;
-                case "4":
-                    Console.WriteLine("Выбран воин");
-                    fighter = _fighters[3].RandomizeStats();
-                    break;
-                case "5":
-                    Console.WriteLine("Выбран убийца");
-                    fighter = _fighters[4].RandomizeStats();
-                    break;
-                default:
-                    Console.WriteLine("Выбран боец по умолчанию - паладин");
-                    fighter = _fighters[0].RandomizeStats();
-                    break;
+                try
+                {
+                    fighter = _fighters[userInput - 1];
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    Console.WriteLine("Такого бойца нет. Выбран боец по умолчанию - Паладин.");
+                    fighter = _fighters[0];
+                }
             }
+            else
+            {
+                Console.WriteLine("Некорректный ввод. Выбран боец по умолчанию - Паладин.");
+                fighter = _fighters[0];
+            }
+            fighter = fighter.GetNewFighter(fighter);
+            
             Console.WriteLine("Нажмите любую клавишу для продолжения...");
             Console.ReadKey(true);
 
@@ -110,10 +101,10 @@ namespace Gladiators
 
     abstract class Fighter
     {
+        protected static Random Rand = new Random();
         protected int BaseHealth;
         protected int BaseDamage;
         protected int BaseArmor;
-        protected Random Rand;
 
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
@@ -121,13 +112,13 @@ namespace Gladiators
 
         public Fighter(int health, int damage, int armor)
         {
-            Health = health;
-            Damage = damage;
-            Armor = armor;
+            BaseHealth = Rand.Next((int)(0.9 * health), (int)(1.1 * health));
+            BaseDamage = Rand.Next((int)(0.9 * damage), (int)(1.1 * damage));
+            BaseArmor = Rand.Next((int)(0.9 * armor), (int)(1.1 * armor));
 
-            BaseHealth = health;
-            BaseDamage = damage;
-            BaseArmor = armor;
+            Health = BaseHealth;
+            Damage = BaseDamage;
+            Armor = BaseArmor;
         }
 
         public void TakeDamage(int damage)
@@ -144,14 +135,14 @@ namespace Gladiators
 
         public abstract void SpecialAbility();
         public abstract void ShowInfo();
-        public abstract Fighter RandomizeStats();
+        public abstract Fighter GetNewFighter(Fighter fighter);
     }
 
     class Paladin : Fighter
     {
         public Paladin(int health, int damage, int armor) : base(health, damage, armor)
         {
-            Rand = new Random();
+            
         }
 
         public override void SpecialAbility()
@@ -171,12 +162,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Защита богов. Броня увеличивается в 2 раза.");
         }
 
-        public override Fighter RandomizeStats()
+        public override Fighter GetNewFighter(Fighter fighter)
         {
-            int health = Rand.Next((int)(0.9 * BaseHealth), (int)(1.1 * BaseHealth));
-            int damage = Rand.Next((int)(0.9 * BaseDamage), (int)(1.1 * BaseDamage));
-            int armor = Rand.Next((int)(0.9 * BaseArmor), (int)(1.1 * BaseArmor));
-            return new Paladin(health, damage, armor);
+            return new Paladin(fighter.Health, fighter.Damage, fighter.Armor);
         }
     }
 
@@ -184,7 +172,7 @@ namespace Gladiators
     {
         public Archer(int health, int damage, int armor) : base(health, damage, armor)
         {
-            Rand = new Random();
+            
         }
 
         public override void SpecialAbility()
@@ -204,12 +192,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Отравленная стрела. Увеличивает урон на 50 %");
         }
 
-        public override Fighter RandomizeStats()
+        public override Fighter GetNewFighter(Fighter fighter)
         {
-            int health = Rand.Next((int)(0.9 * BaseHealth), (int)(1.1 * BaseHealth));
-            int damage = Rand.Next((int)(0.9 * BaseDamage), (int)(1.1 * BaseDamage));
-            int armor = Rand.Next((int)(0.9 * BaseArmor), (int)(1.1 * BaseArmor));
-            return new Archer(health, damage, armor);
+            return new Archer(fighter.Health, fighter.Damage, fighter.Armor);
         }
     }
 
@@ -217,7 +202,7 @@ namespace Gladiators
     {
         public Mystic(int health, int damage, int armor) : base(health, damage, armor)
         {
-            Rand = new Random();
+            
         }
 
         public override void SpecialAbility()
@@ -236,12 +221,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Исцеление. Восстанавливает 80 хп.");
         }
 
-        public override Fighter RandomizeStats()
+        public override Fighter GetNewFighter(Fighter fighter)
         {
-            int health = Rand.Next((int)(0.9 * BaseHealth), (int)(1.1 * BaseHealth));
-            int damage = Rand.Next((int)(0.9 * BaseDamage), (int)(1.1 * BaseDamage));
-            int armor = Rand.Next((int)(0.9 * BaseArmor), (int)(1.1 * BaseArmor));
-            return new Mystic(health, damage, armor);
+            return new Mystic(fighter.Health, fighter.Damage, fighter.Armor);
         }
     }
 
@@ -249,7 +231,7 @@ namespace Gladiators
     {
         public Warrior(int health, int damage, int armor) : base(health, damage, armor)
         {
-            Rand = new Random();
+            
         }
 
         public override void SpecialAbility()
@@ -270,12 +252,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Гнев предков. Увеличивает урон за счет потери собственного здоровья.");
         }
 
-        public override Fighter RandomizeStats()
+        public override Fighter GetNewFighter(Fighter fighter)
         {
-            int health = Rand.Next((int)(0.9 * BaseHealth), (int)(1.1 * BaseHealth));
-            int damage = Rand.Next((int)(0.9 * BaseDamage), (int)(1.1 * BaseDamage));
-            int armor = Rand.Next((int)(0.9 * BaseArmor), (int)(1.1 * BaseArmor));
-            return new Warrior(health, damage, armor);
+            return new Warrior(fighter.Health, fighter.Damage, fighter.Armor);
         }
     }
 
@@ -283,7 +262,7 @@ namespace Gladiators
     {
         public Assassin(int health, int damage, int armor) : base(health, damage, armor)
         {
-            Rand = new Random();
+            
         }
 
         public override void SpecialAbility()
@@ -303,12 +282,9 @@ namespace Gladiators
             Console.WriteLine("Уникальная способность - Удар в сердце. Наносит трехкратный урон.");
         }
 
-        public override Fighter RandomizeStats()
+        public override Fighter GetNewFighter(Fighter fighter)
         {
-            int health = Rand.Next((int)(0.9 * BaseHealth), (int)(1.1 * BaseHealth));
-            int damage = Rand.Next((int)(0.9 * BaseDamage), (int)(1.1 * BaseDamage));
-            int armor = Rand.Next((int)(0.9 * BaseArmor), (int)(1.1 * BaseArmor));
-            return new Assassin(health, damage, armor);
+            return new Assassin(fighter.Health, fighter.Damage, fighter.Armor);
         }
     }
 }
