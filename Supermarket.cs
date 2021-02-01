@@ -45,11 +45,11 @@ namespace Supermarket
             for (var i = 0; i < queueLength; i++)
             {
                 Customer customer = new Customer(_rand.Next(100, 1000));
-                int goodsAmount = _rand.Next(5, 10);
+                int itemsAmount = _rand.Next(5, 10);
 
-                for (var j = 0; j < goodsAmount; j++)
+                for (var j = 0; j < itemsAmount; j++)
                 {
-                    customer.TakeRandomGoods();
+                    customer.TakeRandomItem();
                 }
                 _customers.Enqueue(customer);
             }
@@ -64,9 +64,9 @@ namespace Supermarket
             customer.ShowBag();
             Console.WriteLine($"С Вас {purchaseAmount} $ (Денег у клиента {customer.Money} $)");
 
-            while (!customer.PayForPurchase(purchaseAmount))
+            while (customer.TryToPay(purchaseAmount) == false)
             {
-                customer.DropRandomGoods();
+                customer.DropRandomItem();
                 purchaseAmount = customer.GetPurchaseAmount();
                 Console.WriteLine($"Теперь сумма покупок составляет {purchaseAmount} $");
             }
@@ -79,27 +79,27 @@ namespace Supermarket
     class Customer
     {
         private Random _rand;
-        private List<Goods> _bag;
+        private List<Item> _bag;
 
         public int Money { get; private set; }
 
         public Customer(int money)
         {
             _rand = new Random();
-            _bag = new List<Goods>();
+            _bag = new List<Item>();
             Money = money;
         }
 
-        public void TakeRandomGoods()
+        public void TakeRandomItem()
         {
             string name = "item" + _rand.Next(0, 1000);
             int price = _rand.Next(20, 200);
-            Goods goods = new Goods(name, price);
+            Item item = new Item(name, price);
 
-            _bag.Add(goods);
+            _bag.Add(item);
         }
 
-        public void DropRandomGoods()
+        public void DropRandomItem()
         {
             int index = _rand.Next(0, _bag.Count);
 
@@ -113,15 +113,15 @@ namespace Supermarket
         public int GetPurchaseAmount()
         {
             int purchaseAmount = 0;
-            foreach (var goods in _bag)
+            foreach (var item in _bag)
             {
-                purchaseAmount += goods.Price;
+                purchaseAmount += item.Price;
             }
 
             return purchaseAmount;
         }
 
-        public bool PayForPurchase(int purchaseAmount)
+        public bool TryToPay(int purchaseAmount)
         {
             if (Money >= purchaseAmount)
             {
@@ -141,9 +141,9 @@ namespace Supermarket
             if (_bag.Count > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                foreach (var goods in _bag)
+                foreach (var item in _bag)
                 {
-                    Console.WriteLine($"{goods.Name} - {goods.Price} $");
+                    Console.WriteLine($"{item.Name} - {item.Price} $");
                 }
             }
             else
@@ -155,12 +155,12 @@ namespace Supermarket
         }
     }
 
-    class Goods
+    class Item
     {
         public string Name { get; private set; }
         public int Price { get; private set; }
 
-        public Goods(string name, int price)
+        public Item(string name, int price)
         {
             Name = name;
             Price = price;
