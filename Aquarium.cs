@@ -86,26 +86,18 @@ namespace Aquarium
     {
         private Random _rand;
         private List<Fish> _fishes;
-
-        public int MaxFishesAmount { get; private set; }
-        public int CurrentFishesAmount
-        {
-            get
-            {
-                return _fishes.Count;
-            }
-        }
+        private int _maxFishesAmount;
 
         public Aquarium(int maxFishesAmount)
         {
             _fishes = new List<Fish>();
             _rand = new Random();
-            MaxFishesAmount = maxFishesAmount;
+            _maxFishesAmount = maxFishesAmount;
         }
 
         public void AddFish(Fish fish)
         {
-            if (_fishes.Count == MaxFishesAmount)
+            if (_fishes.Count == _maxFishesAmount)
             {
                 Console.WriteLine("В аквариуме максимальное число рыб.");
                 return;
@@ -140,7 +132,7 @@ namespace Aquarium
 
         public void FillAquarium()
         {
-            int fishesAmount = _rand.Next(1, MaxFishesAmount + 1);
+            int fishesAmount = _rand.Next(1, _maxFishesAmount + 1);
             for (var i = 0; i < fishesAmount; i++)
             {
                 AddFish(new Fish("fish" + i));
@@ -165,7 +157,7 @@ namespace Aquarium
         {
             int index = 1;
 
-            if (CurrentFishesAmount == 0)
+            if (_fishes.Count == 0)
             {
                 Console.WriteLine("Рыб нет.");
                 return;
