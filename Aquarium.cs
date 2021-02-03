@@ -68,14 +68,14 @@ namespace Aquarium
                     }
                     break;
                 case "5":
-                    EndMove();
+                    ToLiveDay();
                     ShowMortalityInfo();
                     break;
                 case "6":
                     isWork = false;
                     break;
                 default:
-                    EndMove();
+                    ToLiveDay();
                     ShowMortalityInfo();
                     break;
             }
@@ -134,7 +134,7 @@ namespace Aquarium
             Console.WriteLine("Аквариум успешно очищен.");
         }
 
-        public void EndMove()
+        public void ToLiveDay()
         {
             Console.WriteLine("Ход окончен.");
             foreach (var fish in _fishes)
