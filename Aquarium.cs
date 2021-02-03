@@ -8,77 +8,12 @@ namespace Aquarium
         static void Main(string[] args)
         {
             Aquarium aquarium = new Aquarium(10);
-            GameMenu gameMenu = new GameMenu(aquarium);
             bool isWork = true;
 
             while (isWork)
             {
-                gameMenu.ShowMenu(ref isWork);
+                aquarium.Live(ref isWork);
             }
-        }
-    }
-
-    class GameMenu
-    {
-        private Aquarium _aquarium;
-        private string userInput;
-
-        public GameMenu(Aquarium aquarium)
-        {
-            _aquarium = aquarium;
-        }
-
-        public void ShowMenu(ref bool isWork)
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Сейчас в акввариуме:");
-            _aquarium.ShowInfo();
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("Ввыберите действие:");
-            Console.WriteLine("1 - Заполнить аквариум (с удалением текущего), 2 - Очистить аквариум, 3 - Добавить рыбу,");
-            Console.WriteLine("4 - Удалить рыбу, 5 - Закончить ход, 6 - Выход");
-            userInput = Console.ReadLine();
-            switch (userInput)
-            {
-                case "1":
-                    _aquarium.ClearAquarium();
-                    _aquarium.FillAquarium();
-                    Console.WriteLine("Аквариум успешно заполнен.");
-                    break;
-                case "2":
-                    _aquarium.ClearAquarium();
-                    Console.WriteLine("Аквариум успешно очищен.");
-                    break;
-                case "3":
-                    Console.WriteLine("Введите название рыбы:");
-                    _aquarium.AddFish(new Fish(Console.ReadLine()));
-                    break;
-                case "4":
-                    Console.WriteLine("Введите индекс рыбы:");
-                    if (int.TryParse(Console.ReadLine(), out int index))
-                    {
-                        _aquarium.RemoveFish(index);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Некорректный ввод.");
-                    }
-                    break;
-                case "5":
-                    _aquarium.EndMove();
-                    _aquarium.ShowMortalityInfo();
-                    break;
-                case "6":
-                    isWork = false;
-                    break;
-                default:
-                    _aquarium.EndMove();
-                    _aquarium.ShowMortalityInfo();
-                    break;
-            }
-            Console.WriteLine("Нажмите любую клавишу для продолжения...");
-            Console.ReadKey(true);
         }
     }
 
@@ -93,6 +28,59 @@ namespace Aquarium
             _fishes = new List<Fish>();
             _rand = new Random();
             _maxFishesAmount = maxFishesAmount;
+        }
+
+        public void Live(ref bool isWork)
+        {
+            string userInput;
+
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Сейчас в акввариуме:");
+            ShowInfo();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Ввыберите действие:");
+            Console.WriteLine("1 - Заполнить аквариум (с удалением текущего), 2 - Очистить аквариум, 3 - Добавить рыбу,");
+            Console.WriteLine("4 - Удалить рыбу, 5 - Закончить ход, 6 - Выход");
+            userInput = Console.ReadLine();
+            switch (userInput)
+            {
+                case "1":
+                    ClearAquarium();
+                    FillAquarium();
+                    break;
+                case "2":
+                    ClearAquarium();
+                    break;
+                case "3":
+                    Console.WriteLine("Введите название рыбы:");
+                    AddFish(new Fish(Console.ReadLine()));
+                    break;
+                case "4":
+                    Console.WriteLine("Введите индекс рыбы:");
+                    if (int.TryParse(Console.ReadLine(), out int index))
+                    {
+                        RemoveFish(index);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Некорректный ввод.");
+                    }
+                    break;
+                case "5":
+                    EndMove();
+                    ShowMortalityInfo();
+                    break;
+                case "6":
+                    isWork = false;
+                    break;
+                default:
+                    EndMove();
+                    ShowMortalityInfo();
+                    break;
+            }
+            Console.WriteLine("Нажмите любую клавишу для продолжения...");
+            Console.ReadKey(true);
         }
 
         public void AddFish(Fish fish)
@@ -137,11 +125,13 @@ namespace Aquarium
             {
                 AddFish(new Fish("fish" + i));
             }
+            Console.WriteLine("Аквариум успешно заполнен.");
         }
 
         public void ClearAquarium()
         {
-            _fishes.RemoveRange(0, _fishes.Count);
+            _fishes.Clear();
+            Console.WriteLine("Аквариум успешно очищен.");
         }
 
         public void EndMove()
@@ -223,28 +213,11 @@ namespace Aquarium
 
         public bool TryToAlive()
         {
-            int deathRate = _rand.Next(0, 100);
-            if (Age < 5)
+            int deathRate = (int)Math.Pow(Age, 2) + _rand.Next(0, 101);
+            if (deathRate > 100)
             {
-                if (deathRate < 10)
-                {
-                    return false;
-                }
-            }
-            else if (Age >= 5 & Age < 10)
-            {
-                if (deathRate < 30)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (deathRate < 70)
-                {
-                    return false;
-                }
-            }
+                return false;
+            }    
 
             return true;
         }
