@@ -110,7 +110,7 @@ namespace Zoo
 
         public abstract string Name { get; }
         public abstract string Sound { get; }
-        public AnimalSex Sex { get; protected set; }
+        public abstract AnimalSex Sex { get; protected set; }
 
         public enum AnimalSex
         {
@@ -121,93 +121,29 @@ namespace Zoo
 
     class Tiger : Animal
     {
-        public override string Name
-        {
-            get
-            {
-                return "Тигр";
-            }
-        }
-        public override string Sound
-        {
-            get
-            {
-                return "Р-р-р";
-            }
-        }
-
-        public Tiger()
-        {
-            Sex = (AnimalSex)Rand.Next(0, 2);
-        }
+        public override string Name { get; } = "Тигр";
+        public override string Sound { get; } = "Р-р-р";
+        public override AnimalSex Sex { get; protected set; } = (AnimalSex)Rand.Next(0, 2);
     }
 
     class Wolf : Animal
     {
-        public override string Name
-        {
-            get
-            {
-                return "Волк";
-            }
-        }
-        public override string Sound
-        {
-            get
-            {
-                return "Ау-у-у";
-            }
-        }
-
-        public Wolf()
-        {
-            Sex = (AnimalSex)Rand.Next(0, 2);
-        }
+        public override string Name { get; } = "Волк";
+        public override string Sound { get; } = "Ау-у-у";
+        public override AnimalSex Sex { get; protected set; } = (AnimalSex)Rand.Next(0, 2);
     }
 
     class Bear : Animal
     {
-        public override string Name
-        {
-            get
-            {
-                return "Медведь";
-            }
-        }
-        public override string Sound
-        {
-            get
-            {
-                return "Р-р-р";
-            }
-        }
-
-        public Bear()
-        {
-            Sex = (AnimalSex)Rand.Next(0, 2);
-        }
+        public override string Name { get; } = "Медведь";
+        public override string Sound { get; } = "Р-р-р";
+        public override AnimalSex Sex { get; protected set; } = (AnimalSex)Rand.Next(0, 2);
     }
 
     class Elephant : Animal
     {
-        public override string Name
-        {
-            get
-            {
-                return "Слон";
-            }
-        }
-        public override string Sound
-        {
-            get
-            {
-                return "У-у-у";
-            }
-        }
-
-        public Elephant()
-        {
-            Sex = (AnimalSex)Rand.Next(0, 2);
-        }
+        public override string Name { get; } = "Слон";
+        public override string Sound { get; } = "У-у-у";
+        public override AnimalSex Sex { get; protected set; } = (AnimalSex)Rand.Next(0, 2);
     }
 }
