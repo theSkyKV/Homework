@@ -91,13 +91,10 @@ namespace War
         {
             for (var i = 0; i < _soldiers.Count; i++)
             {
-                foreach (var soldier in _soldiers)
+                if (_soldiers[i].Health <= 0)
                 {
-                    if (soldier.Health <= 0)
-                    {
-                        _soldiers.Remove(soldier);
-                        break;
-                    }
+                    _soldiers.Remove(_soldiers[i]);
+                    i--;
                 }
             }
         }
