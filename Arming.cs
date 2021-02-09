@@ -9,7 +9,7 @@ namespace Arming
         static void Main(string[] args)
         {
             Database database = new Database();
-            database.GetNamesAndRanks();
+            database.ShowNamesAndRanks();
         }
     }
 
@@ -36,7 +36,7 @@ namespace Arming
             }
         }
 
-        public void GetNamesAndRanks()
+        public void ShowNamesAndRanks()
         {
             var newSoldiersList = from Soldier soldier in _soldiers
                                   select new
