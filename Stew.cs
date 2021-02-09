@@ -16,24 +16,24 @@ namespace Stew
     class Warehouse
     {
         private static Random _rand = new Random();
-        private List<Stew> _stew;
+        private List<Stew> _stews;
 
         public Warehouse()
         {
-            _stew = new List<Stew>();
+            _stews = new List<Stew>();
 
             for (var i = 0; i < 30; i++)
             {
                 string name = Convert.ToChar(_rand.Next(65, 91)) + "name" + i;
                 int productionYear = _rand.Next(2000, 2021);
                 int shelfLife = _rand.Next(5, 25);
-                _stew.Add(new Stew(name, productionYear, shelfLife));
+                _stews.Add(new Stew(name, productionYear, shelfLife));
             }
         }
 
         public void GetExpiredProduct(int currentYear)
         {
-            var expiredStew = _stew.Where(stew => stew.ProductionYear + stew.ShelfLife < currentYear);
+            var expiredStew = _stews.Where(stew => stew.ProductionYear + stew.ShelfLife <= currentYear);
 
             if (expiredStew.Count() > 0)
             {
