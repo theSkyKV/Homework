@@ -20,7 +20,6 @@ namespace Arming
         private List<string> _armings;
         private List<string> _militaryRanks;
 
-
         public Database()
         {
             _soldiers = new List<Soldier>();
