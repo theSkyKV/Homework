@@ -37,11 +37,12 @@ namespace Union
 
         public void Transfer()
         {
-            var soldiers = _soldiers1.Where(soldier => soldier.Name.StartsWith("B")).Union(_soldiers2);
-            ShowDatabase(soldiers);
+            _soldiers2 = _soldiers1.Where(soldier => soldier.Name.StartsWith("B")).Union(_soldiers2).ToList();
+            _soldiers1 = _soldiers1.Except(_soldiers2).ToList();
+            ShowSoldiersList(_soldiers2);
         }
 
-        public void ShowDatabase(IEnumerable<Soldier> soldiers)
+        public void ShowSoldiersList(IEnumerable<Soldier> soldiers)
         {
             foreach (var soldier in soldiers)
             {
