@@ -78,7 +78,7 @@ namespace AutoService
                                 break;
                             }
 
-                            _warehouse.UseDetail(_rand.Next(0, _warehouse.DetailsTypeAmount + 1), 1);
+                            _warehouse.UseDetail(_rand.Next(0, _warehouse.DetailsTypeAmount), 1);
                             if (PayFine(1000))
                             {
                                 Console.WriteLine("Клиент не доволен.");
