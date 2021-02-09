@@ -33,11 +33,11 @@ namespace Stew
 
         public void GetExpiredProduct(int currentYear)
         {
-            var expiredStew = _stews.Where(stew => stew.ProductionYear + stew.ShelfLife <= currentYear);
+            var expiredStews = _stews.Where(stew => stew.ProductionYear + stew.ShelfLife <= currentYear);
 
-            if (expiredStew.Count() > 0)
+            if (expiredStews.Count() > 0)
             {
-                ShowWarehouse(expiredStew);
+                ShowWarehouse(expiredStews);
             }
             else
             {
@@ -45,11 +45,11 @@ namespace Stew
             }
         }
 
-        public void ShowWarehouse(IEnumerable<Stew> stew)
+        public void ShowWarehouse(IEnumerable<Stew> stews)
         {
-            foreach (var item in stew)
+            foreach (var stew in stews)
             {
-                Console.WriteLine($"{item.Name} | {item.ProductionYear} | {item.ShelfLife}");
+                Console.WriteLine($"{stew.Name} | {stew.ProductionYear} | {stew.ShelfLife}");
             }
         }
     }
